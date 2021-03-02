@@ -1,0 +1,12 @@
+__pycache__
+docker/
+migrations/
+
+**/__pycache__
+
+.idea/
+
+.DS_Store
+
+.logs/mysql/**/*
+.volumes/mysql/**/*

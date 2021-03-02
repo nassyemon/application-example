@@ -1,0 +1,14 @@
+FROM nginx:1.19.7-alpine
+ENV TZ=Asia/Tokyo
+
+ARG ADMWEB_NGINX_DIR
+WORKDIR /app
+# COPY ${ADMWEB_NGINX_DIR}/.htpasswd /etc/nginx/.htpasswd
+COPY ${ADMWEB_NGINX_DIR}/nginx.conf /etc/nginx/nginx.conf
+COPY ${ADMWEB_NGINX_DIR}/conf.d/* /etc/nginx/conf.d/
+COPY ${ADMWEB_NGINX_DIR}/run.sh ./run.sh
+COPY ${ADMWEB_NGINX_DIR}/www /www
+EXPOSE 80
+EXPOSE 8080
+CMD ["sh", "run.sh"]
+

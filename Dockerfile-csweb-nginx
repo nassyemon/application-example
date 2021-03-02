@@ -1,0 +1,14 @@
+FROM nginx:1.19.7-alpine
+ENV TZ=Asia/Tokyo
+
+ARG CSWEB_NGINX_DIR
+WORKDIR /app
+# COPY ${CSWEB_NGINX_DIR}/.htpasswd /etc/nginx/.htpasswd
+COPY ${CSWEB_NGINX_DIR}/nginx.conf /etc/nginx/nginx.conf
+COPY ${CSWEB_NGINX_DIR}/conf.d/* /etc/nginx/conf.d/
+COPY ${CSWEB_NGINX_DIR}/run.sh ./run.sh
+COPY ${CSWEB_NGINX_DIR}/www /www
+EXPOSE 80
+EXPOSE 8080
+CMD ["sh", "run.sh"]
+
