@@ -19,9 +19,6 @@ GIT_BRANCH := $(shell git branch --show-current)
 LAST_COMMIT_ID := $(shell git log --format="%H" -n 1 | grep . || echo default)
 
 
-AWS_DEPLOY_PROFILE := $(shell ${ECR_ENVS}; echo $$AWS_DEPLOY_PROFILE)
-REGION :=  $(shell ${ECR_ENVS}; echo $$REGION)
-REGISTRY := $(shell ${ECR_ENVS}; echo $$REGISTRY)
 CSWEB_APP_REPOSITORY := $(shell ${ECR_ENVS}; echo $$CSWEB_APP_REPOSITORY)
 MIGRATE_APP_REPOSITORY := $(shell ${ECR_ENVS}; echo $$MIGRATE_APP_REPOSITORY)
 CSWEB_NGINX_REPOSITORY := $(shell ${ECR_ENVS}; echo $$CSWEB_NGINX_REPOSITORY)
@@ -40,12 +37,12 @@ define PUSH_APP
 	@echo aws: profile=${AWS_DEPLOY_PROFILE} region=${region} repository=$2
 	@echo branch=${GIT_BRANCH} commit_id=${LAST_COMMIT_ID} image=$1
 	@echo tagging to ${LAST_COMMIT_ID} ${BRANCH_BASED_TAG}
-	docker tag $1 ${REGISTRY}/$2:${BRANCH_BASED_TAG}
-	docker tag $1 ${REGISTRY}/$2:${LAST_COMMIT_ID}
-	aws ecr get-login-password --profile ${AWS_DEPLOY_PROFILE} --region ${REGION} | \
-		docker login --username AWS --password-stdin https://${REGISTRY} \
-	  && docker push ${REGISTRY}/$2:${LAST_COMMIT_ID} \
-	  && docker push ${REGISTRY}/$2:${BRANCH_BASED_TAG}
+	docker tag $1 ${ECR_REGISTRY}/$2:${BRANCH_BASED_TAG}
+	docker tag $1 ${ECR_REGISTRY}/$2:${LAST_COMMIT_ID}
+	aws ecr get-login-password --profile ${AWS_DEPLOY_PROFILE} --region ${AWS_REGION} | \
+		docker login --username AWS --password-stdin https://${ECR_REGISTRY} \
+	  && docker push ${ECR_REGISTRY}/$2:${LAST_COMMIT_ID} \
+	  && docker push ${ECR_REGISTRY}/$2:${BRANCH_BASED_TAG}
 endef
 
 .PHONY: prepare
@@ -184,3 +181,7 @@ push-migrate: build-migrate inspect-migrate
 .PHONY: clean
 clean:
 	@echo "nothing to do (not implemented)."
+
+.PHONY: sandbox
+sandbox:
+	@echo ${AWS_DEPLOY_PROFILE} $(AWS_REGION) $(ECR_REGISTRY)

@@ -1,6 +1,12 @@
 # Requirements
 - Docker
 - GNU Make
+- diernv
+
+# Prepare
+ - $mv .envrc.template .envrc
+ - $vi .envrc # replace *AWS_PROFILE* *AWS_ACCOUNT*
+ - $direnv allow
 
 # Initialize
 - $ make up
