@@ -1,4 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
+# from application.database import initialize_database
+
 
 from flask_migrate import Migrate
 

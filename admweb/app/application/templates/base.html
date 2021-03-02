@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Simpway</title>
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" /> -->
+    <link rel="stylesheet" href="static/css/style.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700family=Noto+Sans&display=swap" />
+    <link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet'>
+
+</head>
+
+<body>
+    <section class="is-fullheight">
+
+        <nav class="navbar navbar-expand-lg">
+            <a class="navbar-brand" href="./">
+                <span class="logo">Simpway</span><span class="text-small">パートナー画面</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+
+                <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+                    <li class="nav-item">
+                        <a href="{{ url_for('main.index') }}" class="nav-link">
+                            ホーム
+                        </a>
+                    </li>
+
+                    {% if current_user.is_authenticated %}
+                    <li class="nav-item">
+                        <a href="{{ url_for('auth.profile') }}" class="nav-link">
+                            プロフィール
+                        </a>
+                    </li>
+                    {% endif %}
+
+                    {% if not current_user.is_authenticated %}
+                    <li class="nav-item">
+
+                        <a href="{{ url_for('auth.login') }}" class="nav-link">
+                            ログイン
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ url_for('auth.signup') }}" class="nav-link">
+                            アカウント作成
+                        </a>
+                    </li>
+                    {% endif %}
+
+                    {% if current_user.is_authenticated %}
+                    <li class="nav-item">
+                        <a href="{{ url_for('auth.logout') }}" class="nav-link">
+                            ログアウト
+                        </a>
+                    </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a href="https://www.simpway.to" class="nav-link">
+                            一般ユーザーの方はこちら
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="container">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </section>
+
+
+    <!-- Footer -->
+<footer class="page-footer font-small blue pt-4">
+
+    <!-- Footer Links -->
+    <div class="container-fluid text-center text-md-left">
+  
+      <!-- Grid row -->
+      <div class="row">
+  
+        <!-- Grid column -->
+  
+        <hr class="clearfix w-100 d-md-none pb-3">
+  
+        <!-- Grid column -->
+        <div class="col-md-12 mb-md-0 mb-3 text-center">
+  
+          <!-- Links -->
+  
+          <ul class="list-unstyled">
+            <li>
+              <a href="./">TOPページ</a>
+            </li>
+            <li>
+              <a href="./service">利用規約</a>
+            </li>
+            <li>
+                <a href="./law">特定商取引法に基づく表記</a>
+            </li>
+            <li>
+              <a href="./privacy">プライバシーポリシー</a>
+            </li>
+            <li>
+              <a href="https://www.pfr.technology/">運営会社</a>
+            </li>
+          </ul>
+  
+        </div>
+        <!-- Grid column -->
+  
+      </div>
+      <!-- Grid row -->
+  
+    </div>
+    <!-- Footer Links -->
+  
+    <!-- Copyright -->
+    <div class="footer-copyright text-center py-3">© 2020 Copyright:
+      <a href="https://mdbootstrap.com/"> PathFinder inc.</a>
+    </div>
+    <!-- Copyright -->
+  
+  </footer>
+  <!-- Footer -->
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="static/js/script.js"></script>
+</body>
+
+</html>

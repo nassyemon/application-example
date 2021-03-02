@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block content %}
+<script>
+function MoveCheck() {
+    var res = confirm("完了しますか？");
+    if( res == true ) {
+        // OKなら移動
+        window.location.href = "./home";
+    }
+    else {
+        // キャンセルならアラートボックスを表示
+    }
+}
+</script>
+<h1 class="title">
+    <div class="column is-4 is-offset-4">
+        <div class="box">
+          {% with messages = get_flashed_messages() %}
+          {% if messages %}
+          <div class="notification is-danger">
+            {{ messages[0] }}。
+          </div>
+          {% endif %}
+          {% endwith %}
+      
+          <div class="field">
+            <div class="control">
+              {% for res in result %}
+              <div class="form-group row">
+                <label class="col-2 col-form-label">出発店舗</label>
+                <div class="col-4">
+                  {{ res.start_spot }}
+                </div>
+                <label class="col-2 col-form-label">到着店舗</label>
+                <div class="col-4">
+                  {{ res.goal_spot }}
+                </div>
+              </div>
+              <label class="label">出発地点</label>
+              <p>{{ res.start_spot }}</p>
+            </div>
+          </div>
+          <div class="field">
+            <div class="control">
+              <label class="label">到着地点</label>
+              <p>{{ res.goal_spot }}</p>
+            </div>
+          </div>
+          <div class="field">
+            <div class="control">
+              <label class="label">返却期限</label>
+              <p>{{ res.return_date }}</p>
+            </div>
+          </div>
+          <div class="field">
+            <div class="control">
+              <label class="label">車両タイプ</label>
+              <p>{{ res.var_class }}</p>
+            </div>
+          </div>
+      
+          <div class="field">
+            <div class="control">
+              <!-- <label class="label">料金（円）</label>
+              <p>当日ご案内します</p> -->
+            </div>
+          </div>
+          <div class="field">
+            <div class="control">
+              <label class="label">受け取り日</label>
+              <p>{{ res.user_day }}</p>
+            </div>
+          </div>
+          <div class="field">
+            <div class="control">
+              <label class="label">予約状況</label>
+              <p>{{ res.status }}</p>
+            </div>
+            <div class="control">
+              <label class="label">氏名</label>
+              <p>{{ res.user_name }}</p>
+            </div>
+          </div>
+          <div class="field">
+            <div class="control">
+              <label class="label">電話番号</label>
+              <p>{{ res.user_number }}</p>
+            </div>
+          </div>
+          <div class="field">
+            <div class="control">
+              <label class="label">メールアドレス</label>
+              <p>{{ res.user_mail }}</p>
+            </div>
+          </div>
+          <div class="field">
+            <div class="control">
+              <label class="label">決済状況</label>
+              <p>{{ res.user_check }}</p>
+            </div>
+          </div>
+          <!-- <a href="login" class="button is-block is-info is-large is-fullwidth">ログインして予約する</a> -->
+          <!-- <a href="signup" class="is-block is-info is-large is-fullwidth">アカウント作成して予約する</a> -->
+          <button class="button is-block " onclick="">支払い済み</button>
+          {% endfor %}
+        </div>
+      </div>
+</h1>
+
+{% endblock %}

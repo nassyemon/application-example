@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="section">
+  <div class="container">
+    <h3 class="title">{{ name }}</h3>
+    <div class="column is-4 is-offset-4">
+
+      {% for res in result %}
+            <div class="box">
+              <form method="POST" action="/edit?id={{res.id}}">
+                <div class="field">
+                  <div class="control">
+                    <label class="label">出発店舗</label>
+                    <input class="input is-large" type="start_spot" name="start_spot" value={{ res.start_spot }} autofocus="">
+                  </div>
+                </div>
+
+                <div class="field">
+                  <div class="control">
+                    <label class="label">返却店舗</label>
+                    <input class="input is-large" type="goal_spot" name="goal_spot" value={{ res.goal_spot }}>
+                  </div>
+                </div>
+                <div class="field">
+                  <div class="control">
+                    <label class="label">車両クラス</label>
+                    <input class="input is-large" type="car_class" name="car_class" value={{ res.car_class }}>
+                  </div>
+                </div>
+
+                <div class="field">
+                  <div class="control">
+                    <label class="label">車両ナンバー</label>
+                    <input class="input is-large" type="car_num" name="car_num" value={{ res.car_num }}>
+                  </div>
+                </div>
+                <div class="field">
+                  <div class="control">
+                    <label class="label">チャイルドシートの有無</label>
+                    <input class="is-large" type="checkbox" name="child">
+                  </div>
+                </div>
+                <div class="field">
+                  <div class="control">
+                    <label class="label">返却期限</label>
+                    <input class="input is-large" type="car_num" name="return_date" value={{ res.return_date }}>
+                  </div>
+                </div>
+                <div class="field">
+                  <div class="control">
+                    <label class="label">貸出不可</label>
+                    <input class="is-large" type="checkbox" name="car_status">
+                  </div>
+                </div>
+                <button class="button is-block is-info is-large is-fullwidth">修正する</button>
+              </form>
+            </div>
+            {% endfor %}
+
+            <!-- <table class="table">
+              <thead>
+                <tr>
+                  <th>出発店舗</th>
+                  <th>返却店舗</th>
+                  <th>予約状況</th>
+                  <th>予約者名</th>
+                  <th>車両ナンバー</th>
+                  <th>掲載期限</th>
+                  <th>貸し出し状況</th>
+                  <th>詳細</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for res in result %}
+                <tr>
+                  <td>{{ res.start_spot }}</td>
+                  <td>{{ res.goal_spot }}</td>
+                  <td>予約なし</td>
+                  <td>なし</td>
+                  <td>
+                    {{ res.car_num }}
+                  </td>
+                  <td>
+                    {{ res.return_date }}
+                  </td>
+                  <td>
+                    <label class="checkbox">
+                      <input type="checkbox">
+                    </label>
+                  </td>
+                  <td>
+                    <a href="./data?id={{ res.id }}" class="button">詳細</a>
+                  </td>
+                </tr>
+                {% endfor %}
+
+              </tbody>
+            </table> -->
+            <!-- <a class="button" href="/data">詳細</a> -->
+    </div>
+  </div>
+</section>
+{% endblock %}

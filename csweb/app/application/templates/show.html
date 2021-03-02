@@ -1,0 +1,287 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+  .menu__item {
+    background: #5200b7;
+    color: #fff;
+    cursor: pointer;
+    display: block;
+    margin-bottom: 1px;
+  }
+
+  .menu__item__link {
+    color: #fff;
+    display: block;
+    line-height: 60px;
+    padding: 0 1rem;
+    position: relative;
+  }
+
+  .menu__item__link:after {
+    background: #33105f;
+    content: '\f067';
+    display: block;
+    font-family: "Font Awesome 5 Free";
+    line-height: 60px;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    top: 0;
+    width: 60px;
+  }
+
+  .menu__item__link.on:after {
+    content: '\f068';
+  }
+
+  .submenu {
+    background: #fff;
+    display: none;
+  }
+
+  .submenu__item {
+    border-bottom: 1px solid #5200b7;
+    color: #222;
+    padding: 1rem;
+  }
+</style>
+<div class="wrapper mt-5">
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div class="card">
+          <form action="adduser" method="GET">
+            <input type="hidden" name="id" value="{{res.id}}">
+            <div class="card-header">
+              <h5 class="mb-0">車両情報</h5>
+              <p class="text-muted mb-0">入力をお願いします</p>
+            </div>
+            <div class="card-body">
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <label>出発地点</label>
+                  <input type="text" class="form-control-plaintext text-black" readonly value="{{ res.start_spot }}">
+                </div>
+                <div class="form-group col-md-6">
+                  <label>到着地点</label>
+                  <input type="text" class="form-control-plaintext text-black" readonly value="{{ res.goal_spot }}">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <label>返却期限</label>
+                  <input type="text" class="form-control-plaintext text-black" readonly value="{{ res.return_date }}">
+                </div>
+                <div class="form-group col-md-6">
+                  <label>予約受付期限</label>
+                  <input type="text" class="form-control-plaintext text-black" readonly value="{{ res.display_date }}">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <label>車両タイプ</label>
+                  <input type="text" class="form-control-plaintext text-black" readonly value="{{ res.car_class }}">
+                </div>
+                <div class="form-group col-md-6">
+                  <label>シート情報</label>
+                  <input type="text" class="form-control-plaintext text-black" readonly value="{{ res.child }}">
+                </div>
+                <div class="form-group col-md-6">
+                  <label>機能</label>
+                  <div class="form-control-plaintext text-black">
+                    {% if  not res.nosmoke == None %}
+                    禁煙 /
+                    {% endif %}
+                    {% if  not res.wd4 == None %}
+                    4WD /
+                    {% endif %}
+                    {% if  not res.studless == None %}
+                    スタッドレス /
+                    {% endif %}
+                  </div>
+                </div>
+                <div class="form-group col-md-6">
+                  <label> 備考欄</label>
+                  <div class="form-control-plaintext text-black">
+                    {% if res.remarks == None%}
+                    なし
+                    {% else %}
+                    {{res.remarks}}
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+              <div class="form-row form-group">
+                <label class="col-sm-2 col-form-label">受取日 *</label>
+                <div class="col-sm-5">
+                  <input type="date" class="form-control" name="user_take_day" id="today" min="today"
+                    max="{{ display_day }}">
+                </div>
+                <div class="col-sm-5">
+                  <select name="user_take_time" id="user_take_time" class="form-control">
+                    <option value="">受け取る時間を選択</option>
+                    <option label="09:00" value="09:00">09:00</option>
+                    <option label="09:30" value="09:30">09:30</option>
+                    <option label="10:00" value="10:00">10:00</option>
+                    <option label="10:30" value="10:30">10:30</option>
+                    <option label="11:00" value="11:00">11:00</option>
+                    <option label="11:30" value="11:30">11:30</option>
+                    <option label="12:00" value="12:00">12:00</option>
+                    <option label="12:30" value="12:30">12:30</option>
+                    <option label="13:00" value="13:00">13:00</option>
+                    <option label="13:30" value="13:30">13:30</option>
+                    <option label="14:00" value="14:00">14:00</option>
+                    <option label="14:30" value="14:30">14:30</option>
+                    <option label="15:00" value="15:00">15:00</option>
+                    <option label="15:30" value="15:30">15:30</option>
+                    <option label="16:00" value="16:00">16:00</option>
+                    <option label="16:30" value="16:30">16:30</option>
+                    <option label="17:00" value="17:00">17:00</option>
+                    <option label="17:30" value="17:30">17:30</option>
+                    <option label="18:00" value="18:00">18:00</option>
+                    <option label="18:30" value="18:30">18:30</option>
+                    <option label="19:00" value="19:00">19:00</option>
+                    <option label="19:30" value="19:30">19:30</option>
+                    <option label="20:00" value="20:00">20:00</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-row form-group">
+                <label class="col-sm-2 col-form-label">返却日 *</label>
+                <div class="col-sm-5">
+                  <input type="date" class="form-control" name="user_return_day" id="today2" min="today2"
+                    max="{{ return_day }}">
+                </div>
+                <div class="col-sm-5">
+                  <select name="user_return_time" id="user_return_time" class="form-control">
+                    <option value="">返却する時間を選択</option>
+                    <option label="09:00" value="09:00">09:00</option>
+                    <option label="09:30" value="09:30">09:30</option>
+                    <option label="10:00" value="10:00">10:00</option>
+                    <option label="10:30" value="10:30">10:30</option>
+                    <option label="11:00" value="11:00">11:00</option>
+                    <option label="11:30" value="11:30">11:30</option>
+                    <option label="12:00" value="12:00">12:00</option>
+                    <option label="12:30" value="12:30">12:30</option>
+                    <option label="13:00" value="13:00">13:00</option>
+                    <option label="13:30" value="13:30">13:30</option>
+                    <option label="14:00" value="14:00">14:00</option>
+                    <option label="14:30" value="14:30">14:30</option>
+                    <option label="15:00" value="15:00">15:00</option>
+                    <option label="15:30" value="15:30">15:30</option>
+                    <option label="16:00" value="16:00">16:00</option>
+                    <option label="16:30" value="16:30">16:30</option>
+                    <option label="17:00" value="17:00">17:00</option>
+                    <option label="17:30" value="17:30">17:30</option>
+                    <option label="18:00" value="18:00">18:00</option>
+                    <option label="18:30" value="18:30">18:30</option>
+                    <option label="19:00" value="19:00">19:00</option>
+                    <option label="19:30" value="19:30">19:30</option>
+                    <option label="20:00" value="20:00">20:00</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-row form-group">
+                <div class="col-sm-5 col-form-label">
+                  <label>値段 * （※1円以上でお願いします）</label>
+                </div>
+                <div class="col-sm-7">
+                </div>
+              </div>
+              <div class="form-row form-group">
+                <div class="col-sm-5 col-form-label">
+                  <label>ご要望記入欄</label>
+                </div>
+                <div class="col-sm-7">
+                  <textarea class="form-control" name="user_remarks" placeholder="チャイルドシート2個欲しいなど"
+                    ></textarea>
+                </div>
+              </div>
+              <div class="card-footer text-muted d-flex align-items-center">
+                {% if user.name %}
+                <button type="button" class="btn btn-primary mr-3" data-toggle="modal" data-target="#priceModal">
+                  金額を入力する
+                </button>
+                {% else %}
+                <a href="./login?id={{res.id}}" class="btn btn-primary mr-3">ログインする</a>
+                {% endif %}
+
+                <small class="text-danger">Fields marked * are required</small>
+              </div>
+            </div>
+            <div class="modal fade" id="priceModal" tabindex="-1" role="dialog" aria-labelledby="priceModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body overflow-auto">
+                    <div>テキストが入ります</div>
+                    <div>テキストが入ります</div>
+                    <div>テキストが入ります</div>
+                    <div>テキストが入ります</div>
+                    <div>テキストが入ります</div>
+                    <div>テキストが入ります</div>
+                    <div>テキストが入ります</div>
+                    <div>テキストが入ります</div>
+                    <div>テキストが入ります</div>
+                    <div>テキストが入ります</div>
+                    <div>テキストが入ります</div>
+                    <div>テキストが入ります</div>
+                    <div>テキストが入ります</div>
+                    <div>テキストが入ります</div>
+                    <div>テキストが入ります</div>
+                    <div>テキストが入ります</div>
+                    <div>テキストが入ります</div>
+                    <div>テキストが入ります</div>
+                    <div>テキストが入ります</div>
+                    <div>テキストが入ります</div>
+                    <div>テキストが入ります</div>
+                    <div>テキストが入ります</div>
+                    <div>テキストが入ります</div>
+                    <div>テキストが入ります</div>
+                    <div>テキストが入ります</div>
+                    <div>テキストが入ります</div>
+                    <div>テキストが入ります</div>
+                    <div>テキストが入ります</div>
+                    <div>テキストが入ります</div>
+                    <div>テキストが入ります</div>
+                    <div>テキストが入ります</div>
+                    <div>テキストが入ります</div>
+                  </div>
+                  <div class="modal-footer">
+                    <select type="number" name="price" class="form-control" required>
+                      <option value="50">50円</option>
+                      <option value="500">500円</option>
+                      <option value="5000">5000円</option>
+                      <option value="10000">10000円</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary mr-3">予約する</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    var today = new Date();
+    today.setDate(today.getDate());
+    var yyyy = today.getFullYear();
+    var mm = ("0" + (today.getMonth() + 1)).slice(-2);
+    var dd = ("0" + today.getDate()).slice(-2);
+    document.getElementById("today").value = yyyy + '-' + mm + '-' + dd;
+    document.getElementById("today").min = yyyy + '-' + mm + '-' + dd;
+    document.getElementById("today2").value = yyyy + '-' + mm + '-' + dd;
+    document.getElementById("today2").min = yyyy + '-' + mm + '-' + dd;
+
+  </script>
+
+  {% endblock %}

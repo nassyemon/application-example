@@ -1,7 +1,7 @@
 FROM python:3.7.9-buster
 
 ARG CSWEB_APP_DIR
-ARG MIGRATIONS_DIR
+ARG SHARED_DIR
 WORKDIR /app
 COPY ${CSWEB_APP_DIR}/requirements.txt requirements.txt
 RUN pip install -r requirements.txt
@@ -9,6 +9,7 @@ RUN pip install -r requirements.txt
 ENV TZ JST-9
 COPY ${CSWEB_APP_DIR}/run.py ./
 COPY ${CSWEB_APP_DIR}/application ./application
+COPY ${SHARED_DIR}/models ./application/models
 ENV LANG ja_JP.UTF-8
 ENV LANGUAGE ja_JP:ja
 ENV LC_ALL ja_JP.UTF-8

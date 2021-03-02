@@ -1,0 +1,346 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="section">
+  <div class="container">
+    <h3 class="title text-center">{{ name }}</h3>
+    <h3 class="subtitle text-center">営業時間：9:00~20:00</h3>
+
+    <div class="columns is-multiline is-mobile is-tablet is-desktop">
+      <div class="column is-12-mobile is-4-tablet is-3-desktop">
+
+        <aside>
+          <div class="" id="search-form">
+            <div class="box">
+              {% with messages = get_flashed_messages() %}
+              {% if messages %}
+              <div class="notification is-danger">
+                {{ messages[0] }}。
+              </div>
+              {% endif %}
+              {% endwith %}
+              <form method="POST" class="mb-3" action="/profile">
+                <div class="form-group row">
+                  <label class="col-2 col-form-label">出発店舗</label>
+                  <div class="col-4">
+                    <input class="form-control" type="start_spot" name="start_spot" placeholder="大阪" autofocus=""
+                      required>
+                  </div>
+                  <label class="col-2 col-form-label">到着店舗</label>
+                  <div class="col-4">
+                    <input class="form-control" type="goal_spot" name="goal_spot" placeholder="東京" autofocus=""
+                      required>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-2 col-form-label">車両クラス</label>
+                  <div class="col-4">
+                    <select class="form-control" name="car_class" required>
+                      <option>軽自動車</option>
+                      <option>4-5人乗り</option>
+                      <option>6-8人乗り</option>
+                      <option>9人以上</option>
+                    </select>
+                  </div>
+                  <label class="col-2 col-form-label">車両ナンバー</label>
+                  <div class="col-4">
+                    <input class="form-control" type="car_num" name="car_num" placeholder="東京" autofocus="">
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label class="col-2 col-form-label">チャイルドシート情報</label>
+                  <div class="col-4">
+                    <select class="form-control" name="child" required>
+                      <option>なし</option>
+                      <option>ベビーシート</option>
+                      <option>チャイルドシート</option>
+                      <option>ジュニアシート</option>
+                    </select>
+                  </div>
+                  <label class="col-2 col-form-label">機能（必須）</label>
+                  <div class="col-4">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" id="inlineCheckbox1" name="option1"
+                        value="option1" checked disabled>
+                      <input class="form-check-input" type="hidden" id="inlineCheckbox1" name="option1" value="option1">
+                      <label class="form-check-label" for="inlineCheckbox1">禁煙</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" id="inlineCheckbox2" name="option2"
+                        value="option2" checked disabled>
+                      <input class="form-check-input" type="hidden" id="inlineCheckbox2" name="option2" value="option2">
+                      <label class="form-check-label" for="inlineCheckbox2">4WD</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" id="inlineCheckbox3" name="option3"
+                        value="option3" checked disabled>
+                      <input class="form-check-input" type="hidden" id="inlineCheckbox3" name="option3" value="option3">
+                      <label class="form-check-label" for="inlineCheckbox3">スタッドレス</label>
+                    </div>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="example-datetime-local-input" class="col-2 col-form-label">返却期限</label>
+                  <div class="col-sm-2 pr-0">
+                    <input type="date" class="form-control" name="return_day" required>
+                  </div>
+                  <div class="col-sm-2 pl-0">
+                    <select name="return_time" id="return_time" class="form-control" required>
+                      <option value="">返却する時間を選択</option>
+                      <option label="09:00" value="09:00">09:00</option>
+                      <option label="09:30" value="09:30">09:30</option>
+                      <option label="10:00" value="10:00">10:00</option>
+                      <option label="10:30" value="10:30">10:30</option>
+                      <option label="11:00" value="11:00">11:00</option>
+                      <option label="11:30" value="11:30">11:30</option>
+                      <option label="12:00" value="12:00">12:00</option>
+                      <option label="12:30" value="12:30">12:30</option>
+                      <option label="13:00" value="13:00">13:00</option>
+                      <option label="13:30" value="13:30">13:30</option>
+                      <option label="14:00" value="14:00">14:00</option>
+                      <option label="14:30" value="14:30">14:30</option>
+                      <option label="15:00" value="15:00">15:00</option>
+                      <option label="15:30" value="15:30">15:30</option>
+                      <option label="16:00" value="16:00">16:00</option>
+                      <option label="16:30" value="16:30">16:30</option>
+                      <option label="17:00" value="17:00">17:00</option>
+                      <option label="17:30" value="17:30">17:30</option>
+                      <option label="18:00" value="18:00">18:00</option>
+                      <option label="18:30" value="18:30">18:30</option>
+                      <option label="19:00" value="19:00">19:00</option>
+                      <option label="19:30" value="19:30">19:30</option>
+                      <option label="20:00" value="20:00">20:00</option>
+                    </select>
+                  </div>
+                  <label for="example-datetime-local-input" class="col-2 col-form-label">予約受付期限</label>
+                  <div class="col-sm-2 pr-0">
+                    <input type="date" class="form-control" name="display_day" required>
+                  </div>
+                  <div class="col-sm-2 pl-0">
+                    <select name="display_time" id="display_time" class="form-control" required>
+                      <option value="">予約受付期限を選択</option>
+                      <option label="00:00" value="00:00">00:00</option>
+                      <option label="00:30" value="00:30">00:30</option>
+                      <option label="01:00" value="01:00">01:00</option>
+                      <option label="01:30" value="01:30">01:30</option>
+                      <option label="02:00" value="02:00">02:00</option>
+                      <option label="02:30" value="02:30">02:30</option>
+                      <option label="03:00" value="03:00">03:00</option>
+                      <option label="03:30" value="03:30">03:30</option>
+                      <option label="04:00" value="04:00">04:00</option>
+                      <option label="04:30" value="04:30">04:30</option>
+                      <option label="05:00" value="05:00">05:00</option>
+                      <option label="05:30" value="05:30">05:30</option>
+                      <option label="06:00" value="06:00">06:00</option>
+                      <option label="06:30" value="06:30">06:30</option>
+                      <option label="07:00" value="07:00">07:00</option>
+                      <option label="07:30" value="07:30">07:30</option>
+                      <option label="08:00" value="08:00">08:00</option>
+                      <option label="08:30" value="08:30">08:30</option>
+                      <option label="09:00" value="09:00">09:00</option>
+                      <option label="09:30" value="09:30">09:30</option>
+                      <option label="10:00" value="10:00">10:00</option>
+                      <option label="10:30" value="10:30">10:30</option>
+                      <option label="11:00" value="11:00">11:00</option>
+                      <option label="11:30" value="11:30">11:30</option>
+                      <option label="12:00" value="12:00">12:00</option>
+                      <option label="12:30" value="12:30">12:30</option>
+                      <option label="13:00" value="13:00">13:00</option>
+                      <option label="13:30" value="13:30">13:30</option>
+                      <option label="14:00" value="14:00">14:00</option>
+                      <option label="14:30" value="14:30">14:30</option>
+                      <option label="15:00" value="15:00">15:00</option>
+                      <option label="15:30" value="15:30">15:30</option>
+                      <option label="16:00" value="16:00">16:00</option>
+                      <option label="16:30" value="16:30">16:30</option>
+                      <option label="17:00" value="17:00">17:00</option>
+                      <option label="17:30" value="17:30">17:30</option>
+                      <option label="18:00" value="18:00">18:00</option>
+                      <option label="18:30" value="18:30">18:30</option>
+                      <option label="19:00" value="19:00">19:00</option>
+                      <option label="19:30" value="19:30">19:30</option>
+                      <option label="20:00" value="20:00">20:00</option>
+                      <option label="20:30" value="20:30">20:30</option>
+                      <option label="21:00" value="21:00">21:00</option>
+                      <option label="21:30" value="21:30">21:30</option>
+                      <option label="22:00" value="22:00">22:00</option>
+                      <option label="22:30" value="22:30">22:30</option>
+                      <option label="23:00" value="23:00">23:00</option>
+                      <option label="23:30" value="23:30">23:30</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-2 col-form-label">備考欄</label>
+                  <div class="col-4">
+                    <textarea class="form-control" name="remarks" placeholder="チャイルドシート2個" autofocus=""></textarea>
+                  </div>
+                </div>
+                <div class="form-check text-right">
+                  <input class="form-check-input" type="checkbox" name="car_status" value="予約可">
+                  <label class="form-check-label" for="gridCheck" required>
+                    即日予約受付開始にしますか？
+                  </label>
+                </div>
+                <div class="text-right">
+                  <button type="submit" class="btn btn-primary">追加する</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </aside>
+      </div>
+      <a href="./download" class="btn btn-primary">予約状況のダウンロード</a>
+      <div class="text-nowrap table-responsive">
+        <table class="table" id="ownerprof" width=>
+          <thead>
+            <tr>
+              <th>出発店舗</th>
+              <th>返却店舗</th>
+              <th>予約状況</th>
+              <th>ステータス</th>
+              <th>予約者名</th>
+              <th>車両ナンバー</th>
+              <th>クラス</th>
+              <th>返却期限</th>
+              <th>予約受付期限</th>
+              <th>貸出状況</th>
+              <th>詳細</th>
+              <th>修正</th>
+              <th>削除</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for res in result %}
+            <tr>
+              <td>{{ res.start_spot }}</td>
+              <td>{{ res.goal_spot }}</td>
+              <td>{{ res.user_status }}</td>
+              <td>{{ res.user_check }}</td>
+              <td>{{ res.user_name }}</td>
+              <td>
+                {{ res.car_num }}
+              </td>
+              <td>
+                {{ res.car_class }}
+              </td>
+              <td>
+                {{ res.return_date }}
+              </td>
+              <td>
+                {{ res.display_date }}
+              </td>
+              <td>
+                {{ res.car_status }}
+              </td>
+              <td>
+                <!-- <a href="./data?id={{ res.id }}" class="btn btn-light">詳細</a> -->
+                <button type="button" class="btn btn-light" data-toggle="modal" data-target="#car{{ res.id }}">
+                  詳細
+                </button>
+              </td>
+              <td>
+                {% if res.user_status == 'あり' %}
+                <a href="./edit?id={{ res.id }}" class="btn btn-light disabled" tabindex="-1" role="button"
+                  aria-disabled="true">修正</a>
+                {% else %}
+                <a href="./edit?id={{ res.id }}" class="btn btn-light">修正</a>
+                {% endif %}
+              </td>
+              <td>
+                {% if res.user_status == 'あり' %}
+                <a href="./delete?id={{ res.id }}" class="btn btn-light disabled" tabindex="-1" role="button"
+                  aria-disabled="true">削除</a>
+                {% else %}
+                <a href="./delete?id={{ res.id }}" class="btn btn-light">削除</a>
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+
+          </tbody>
+        </table>
+        <!-- <a class="button" href="/data">詳細</a> -->
+      </div>
+    </div>
+
+    <!-- modal -->
+    {% for res in result %}
+    <div class="modal fade" id="car{{ res.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">{{ res.start_spot }}から{{ res.goal_spot }}のルート</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <h5 class="modal-title">車両情報</h5>
+            <div class="row text-left mb-1">
+              <div class="col-sm-6">ナンバー：<br>{{ res.car_num }}</div>
+              <div class="col-sm-6">
+                クラス：<br>{{ res.car_class }}
+              </div>
+            </div>
+            <div class="row text-left mb-1">
+              <div class="col-sm-6">シート情報：<br>{{ res.child }}</div>
+              <div class="col-sm-6">貸出状況：<br>
+                {{ res.car_status }}
+              </div>
+            </div>
+            <div class="row text-left mb-1">
+              <div class="col-sm-12">機能：<br>
+                {% if  not res.nosmoke == None %}
+                禁煙 /
+                {% endif %}
+                {% if  not res.wd4 == None %}
+                4WD /
+                {% endif %}
+                {% if  not res.studless == None %}
+                スタッドレス /
+                {% endif %}
+              </div>
+            </div>
+            <div class="row text-left mb-1">
+              <div class="col-sm-6">返却期限日：<br>{{ res.return_date }}</div>
+              <div class="col-sm-6">
+                予約受付期限日：<br>{{ res.display_date }}
+              </div>
+            </div>
+            <div class="row text-left mb-1">
+              <div class="col-sm-6">備考欄：<br>{{ res.remarks }}</div>
+            </div>
+            <hr>
+            <h5 class="modal-title">ユーザー情報</h5>
+            <div class="row text-left mb-1">
+              <div class="col-sm-6">ステータス：<br>{{ res.user_check }}</div>
+              <div class="col-sm-6">
+                予約者名：<br>{{ res.user_name }}
+              </div>
+            </div>
+            <div class="row text-left mb-1">
+              <div class="col-sm-6">受取日：<br>{{ res.user_take_date }}</div>
+              <div class="col-sm-6">
+                返却日：<br>{{ res.user_return_date }}
+              </div>
+            </div>
+            <div class="row text-left mb-1">
+              <div class="col-sm-6">支払金額：<br>{{ res.user_price }}円</div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
+            <a href="rental?id={{ res.id }}" class="btn btn-primary">貸出</a>
+            <a href="payment?id={{ res.id }}" class="btn btn-primary">支払い済み</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

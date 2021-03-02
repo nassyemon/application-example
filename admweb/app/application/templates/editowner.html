@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="section">
+  <div class="container">
+    <h3 class="title">{{ name }}</h3>
+    <div class="column is-4 is-offset-4">
+
+      <div class="box">
+        <form method="POST" action="/edit?id={{res.id}}">
+            <div class="form-group row">
+              <label class="col-2 col-form-label">出発店舗</label>
+              <div class="col-4">
+                <input class="form-control" type="start_spot" name="start_spot" value={{res.start_spot}} autofocus="">
+              </div>
+              <label class="col-2 col-form-label">到着店舗</label>
+              <div class="col-4">
+                <input class="form-control" type="goal_spot" name="goal_spot" value={{res.goal_spot}} autofocus="">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-2 col-form-label">車両クラス</label>
+              <div class="col-4">
+                <input class="form-control" type="car_class" name="car_class" value={{res.car_class}} autofocus="">
+              </div>
+              <label class="col-2 col-form-label">車両ナンバー</label>
+              <div class="col-4">
+                <input class="form-control" type="car_num" name="car_num" value="{{res.car_num}}" autofocus="">
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-2 col-form-label">チャイルドシート情報</label>
+              <div class="col-4">
+                <select class="form-control" name="child">
+                  {% if res.child == "なし" %}
+                  <option selected>なし</option>
+                  <option>ベビーシート</option>
+                  <option>チャイルドシート</option>
+                  <option>ジュニアシート</option>
+                  {% elif res.child == "ベビーシート" %}
+                  <option>なし</option>
+                  <option selected>ベビーシート</option>
+                  <option>チャイルドシート</option>
+                  <option>ジュニアシート</option>
+                  {% elif res.child == "チャイルドシート" %}
+                  <option>なし</option>
+                  <option>ベビーシート</option>
+                  <option selected>チャイルドシート</option>
+                  <option>ジュニアシート</option>
+                  {% elif res.child == "ジュニアシート" %}
+                  <option>なし</option>
+                  <option>ベビーシート</option>
+                  <option>チャイルドシート</option>
+                  <option selected>ジュニアシート</option>
+                  {% else %}
+                  <option>なし</option>
+                  <option>ベビーシート</option>
+                  <option>チャイルドシート</option>
+                  <option>ジュニアシート</option>
+                  {% endif %}
+
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="example-datetime-local-input" class="col-2 col-form-label">返却期限</label>
+              <div class="col-4">
+                <input class="form-control" type="datetime-local" name="return_date" value={{ res.return_date }}
+                  max="19:00" min="09:00" id="example-datetime-local-input" required>
+              </div>
+              <label for="example-datetime-local-input" class="col-2 col-form-label">予約受付期限</label>
+              <div class="col-4">
+                <input class="form-control" type="datetime-local" value={{ res.display_date }} name="display_date"
+                  id="example-datetime-local-input">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="example-datetime-local-input" class="col-2 col-form-label">備考欄</label>
+              <div class="col-4">
+                <textarea class="form-control" name="remarks" placeholder="チャイルドシート2個" autofocus="">{{res.remarks}}</textarea>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-2 col-form-label">貸出状況</label>
+              <div class="col-4">
+                <select class="form-control" name="car_status">
+                  {% if res.car_status == "予約可" %}
+                  <option selected>予約可</option>
+                  <option>予約不可</option>
+                  {% elif res.car_status == "予約不可" %}
+                  <option>予約可</option>
+                  <option selected>予約不可</option>
+                  {% else %}
+                  <option>予約可</option>
+                  <option>予約不可</option>
+                  {% endif %}
+                </select>
+              </div>
+            </div>
+            <div class="text-right">
+              <button type="submit" class="btn btn-primary">修正する</button>
+            </div>
+          </form>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

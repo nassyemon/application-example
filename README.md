@@ -1,12 +1,14 @@
 # Requirements
-Docker
-GNU Make
+- Docker
+- GNU Make
 
 # Initialize
-make db upgrade
+- $ make up
+- (wait for while until mysql initialization is done)
+- $ make db upgrade
 
 # Run app
-make up-watch
+- $ make up-watch
 
 # Listening ports
 Customer web

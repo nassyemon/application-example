@@ -7,6 +7,7 @@ migrations/
 .idea/
 
 .DS_Store
+**/.DS_Store
 
 .logs/mysql/**/*
 .volumes/mysql/**/*

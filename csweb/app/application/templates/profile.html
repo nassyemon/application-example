@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block content %}
+<script>
+  function MoveCheck(car_id) {
+    var res = confirm("キャンセルして大丈夫ですか？");
+    if (res == true) {
+      // OKなら移動
+      window.location.href = "/cancel?id=" + car_id;
+    }
+    else {
+      // キャンセルならアラートボックスを表示
+    }
+  }
+</script>
+<h1 class="title text-center">
+  {{ user }} さんの予約状況
+</h1>
+
+<div class="row">
+
+  {% for res in result %}
+  <div class="col-sm-12 col-md-4 mb-1">
+    <div class="card">
+      <h5 class="card-header">受取日 {{res.user_take_date}} <br>返却日 {{res.user_return_date}}</h5>
+      <div class="card-body">
+        <h5 class="card-title">{{ res.start_spot }} から {{res.goal_spot}}</h5>
+        <hr>
+        <h5 class="card-title">車情報</h5>
+        <p class="card-text">
+          {{ res.car_class }} <br>
+          車両ナンバー{{ res.car_num }} <br>
+        </p>
+        <div class="row">
+          <div class="col-sm-6">
+            <p class="card-text">
+              支払金額：{{ res.user_price }}
+            </p>
+          </div>
+          <div class="col-sm-6">
+            <p class="card-text">
+              支払金額：{{ res.user_price }}
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <button onclick="MoveCheck({{res.id}})" class="btn btn-primary">キャンセルする</button>
+      </div>
+    </div>
+    <!-- <div class="box">
+        <div class="field">
+          <div class="control">
+            <label class="label">出発地点</label>
+            <p>{{ res.start_spot }}</p>
+          </div>
+          <div class="field">
+            <div class="control">
+              <label class="label">到着地点</label>
+              <p>{{ res.goal_spot }}</p>
+            </div>
+          </div>
+          <div class="field">
+            <div class="control">
+              <label class="label">返却期限</label>
+              <p>{{ res.user_return_date }}</p>
+            </div>
+          </div>
+          <div class="field">
+            <div class="control">
+              <label class="label">受取日</label>
+              <p>{{ res.user_get_date }}</p>
+            </div>
+          </div>
+          <div class="field">
+            <div class="control">
+              <label class="label">車両タイプ</label>
+              <p>{{ res.car_class }}</p>
+            </div>
+          </div>
+          <div class="field">
+            <div class="control">
+              <label class="label">料金</label>
+              <p>当日ご案内します</p>
+            </div>
+          </div>
+          <div class="field">
+            <div class="control">
+              <label class="label">受取日</label>
+              <p>{{ res.user_day }}</p>
+            </div>
+          </div>
+          <div class="field">
+            <div class="control">
+              <label class="label">氏名</label>
+              <p>{{ res.user_name }}</p>
+            </div>
+          </div>
+          <div class="field">
+            <div class="control">
+              <label class="label">電話番号</label>
+              <p>{{ res.user_number }}</p>
+            </div>
+          </div>
+          <div class="field">
+            <div class="control">
+              <label class="label">メールアドレス</label>
+              <p>{{ res.user_mail }}</p>
+            </div>
+          </div>
+        <button class="button is-block " onclick="MoveCheck({{res.id}})">キャンセルする</button> -->
+
+  </div>
+
+  {% endfor %}
+
+</div>
+</div>
+</div>
+
+{% endblock %}

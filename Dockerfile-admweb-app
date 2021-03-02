@@ -2,6 +2,7 @@ FROM python:3.7.9-buster
 
 ARG ADMWEB_APP_DIR
 ARG MIGRATIONS_DIR
+ARG SHARED_DIR
 WORKDIR /app
 COPY ${ADMWEB_APP_DIR}/requirements.txt requirements.txt
 RUN pip install -r requirements.txt
@@ -9,6 +10,7 @@ RUN pip install -r requirements.txt
 ENV TZ JST-9
 COPY ${ADMWEB_APP_DIR}/run.py ./
 COPY ${ADMWEB_APP_DIR}/application ./application
+COPY ${SHARED_DIR}/models ./application/models
 COPY ${MIGRATIONS_DIR} ./migrations
 ENV LANG ja_JP.UTF-8
 ENV LANGUAGE ja_JP:ja

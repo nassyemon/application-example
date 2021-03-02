@@ -71,19 +71,15 @@ down:
 	@docker-compose down
 
 .PHONY: db-init
- db-init:
-	@docker-compose build
-	mkdir -p ${MIGRATIONS_DIR}
+ db-init: build
 	docker-compose run  --entrypoint flask admweb-app db init
 
 .PHONY: db-migrate
-db-migrate: up
-	@docker-compose build
+db-migrate: build
 	docker-compose run --entrypoint flask admweb-app db migrate
 
 .PHONY: db-upgrade
-db-upgrade: up
-	@docker-compose build
+db-upgrade: build
 	docker-compose run  --entrypoint flask admweb-app db upgrade
 
 .PHONY: connect-mysql

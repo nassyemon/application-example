@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="column is-4 is-offset-4">
+    <h3 class="title">アカウントを作成</h3>
+    <div class="box">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div class="notification is-danger">
+            {{ messages[0] }}。
+        </div>
+        {% endif %}
+        {% endwith %}
+        <form method="POST" action="/signup">
+            <div class="field">
+                <div class="control">
+                    <label class="label">メールアドレス</label>
+                    <input class="input is-large" type="email" name="email" placeholder="example@gmail.com"
+                           autofocus="">
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="control">
+                    <label class="label">ユーザ名（ 2 ~ 15 文字以内の英数字 ）</label>
+                    <input class="input is-large" type="text" name="name" placeholder="hayato1994" autofocus="">
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="control">
+                    <label class="label">表示名（ 50 文字以内 ）</label>
+                    <input class="input is-large" type="text" name="display_name" placeholder="伊勢 隼人" autofocus="">
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="control">
+                    <label class="label">パスワード（ 7 文字以上 ）</label>
+                    <input class="input is-large" type="password" name="password" placeholder="">
+                </div>
+            </div>
+
+            <button class="button is-block is-info is-large is-fullwidth">登録する</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

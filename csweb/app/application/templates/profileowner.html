@@ -1,0 +1,250 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="section">
+  <div class="container">
+    <h3 class="title">{{ name }}</h3>
+    <h3 class="subtitle">営業時間：9:00~19:00</h3>
+
+    <div class="columns is-multiline is-mobile is-tablet is-desktop">
+      <div class="column is-12-mobile is-4-tablet is-3-desktop">
+
+        <aside>
+          <div class="" id="search-form">
+            <div class="box">
+              {% with messages = get_flashed_messages() %}
+              {% if messages %}
+              <div class="notification is-danger">
+                {{ messages[0] }}。
+              </div>
+              {% endif %}
+              {% endwith %}
+              <form method="POST" action="/home">
+                <div class="field">
+                  <div class="control">
+                    <label class="label">出発店舗</label>
+                    <input class="input is-large" type="start_spot" name="start_spot" placeholder="大阪" autofocus="">
+                  </div>
+                </div>
+
+                <div class="field">
+                  <div class="control">
+                    <label class="label">返却店舗</label>
+                    <input class="input is-large" type="goal_spot" name="goal_spot" placeholder="東京">
+                  </div>
+                </div>
+                <div class="field">
+                  <div class="control">
+                    <label class="label">車両クラス</label>
+                    <input class="input is-large" type="car_class" name="car_class" placeholder="東京">
+                  </div>
+                </div>
+
+                <div class="field">
+                  <div class="control">
+                    <label class="label">車両ナンバー</label>
+                    <input class="input is-large" type="car_num" name="car_num" placeholder="東京">
+                  </div>
+                </div>
+                <div class="field">
+                  <div class="control">
+                    <label class="label">チャイルドシートの有無</label>
+                    <input class="is-large" type="checkbox" name="child" placeholder="2020-03-28">
+                  </div>
+                </div>
+                <div class="field">
+                  <div class="control">
+                    <label class="label">返却期限</label>
+                    <div class="columns">
+                      <div class="column pr-0">
+                        <div class="select">
+                          <select name="year" class="inpS js-changeYear">
+                            <option value="年">年</option>
+                            <option value="2020">2020</option>
+                            <option value="2021">2021</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="column pr-0 pl-0">
+                        <div class="select">
+                          <select name="month" class="is-large inpS js-changeMonth">
+                            <option value="月">月</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="column pr-0 pl-0">
+                        <div class="select">
+                          <select name="day" class="inpS js-changeDay">
+                            <option value="日">日</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                            <option value="13">13</option>
+                            <option value="14">14</option>
+                            <option value="15">15</option>
+                            <option value="16">16</option>
+                            <option value="17">17</option>
+                            <option value="18">18</option>
+                            <option value="19">19</option>
+                            <option value="20">20</option>
+                            <option value="21">21</option>
+                            <option value="22">22</option>
+                            <option value="23">23</option>
+                            <option value="24">24</option>
+                            <option value="25">25</option>
+                            <option value="26">26</option>
+                            <option value="27">27</option>
+                            <option value="28">28</option>
+                            <option value="29">29</option>
+                            <option value="30">30</option>
+                            <option value="31">31</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="columns">
+                      <div class="column">
+                        <div class="select">
+                          <select name="hour" class="inpS">
+                            <option value="時">時</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                            <option value="13">13</option>
+                            <option value="14">14</option>
+                            <option value="15">15</option>
+                            <option value="16">16</option>
+                            <option value="17">17</option>
+                            <option value="18">18</option>
+                            <option value="19">19</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="column">
+                        <div class="select">
+                          <select name="minites" class="inpS">
+                            <option value="分">分</option>
+                            <option value="0">0</option>
+                            <option value="15">15</option>
+                            <option value="30">30</option>
+                            <option value="45">45</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <button class="button is-block is-info is-large is-fullwidth">追加する</button>
+              </form>
+            </div>
+          </div>
+        </aside>
+      </div>
+      <div class="column is-12-mobile is-8-tablet is-9-desktop">
+        <div class="columns is-multiline is-mobile is-tablet is-desktop">
+          <div class="column is-6-mobile is-4-tablet is-12-desktop">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>出発店舗</th>
+                  <th>返却店舗</th>
+                  <th>予約状況</th>
+                  <th>予約者名</th>
+                  <th>車両ナンバー</th>
+                  <th>掲載期限</th>
+                  <th>貸出状況</th>
+                  <th>詳細</th>
+                  <th>修正</th>
+                  <th>削除</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for res in result %}
+                <tr>
+                  <td>{{ res.start_spot }}</td>
+                  <td>{{ res.goal_spot }}</td>
+                  <td>{{ res.user_status }}</td>
+                  <td>{{ res.user_name }}</td>
+                  <td>
+                    {{ res.car_num }}
+                  </td>
+                  <td>
+                    {{ res.return_date }}
+                  </td>
+                  <td>
+                    {% if res.car_status == None %}
+                    貸出可
+                    {% else %}
+                    貸出不可
+                    {% endif %}
+                  </td>
+                  <td>
+                    <!-- <a href="./data?id={{ res.id }}" class="button">詳細</a> -->
+                    <button type="button" class="btn" data-toggle="modal" data-target="#{{ res.id }}">
+                      詳細
+                    </button>
+                  </td>
+                  <td>
+                    <a href="./edit?id={{ res.id }}" class="button">修正</a>
+                  </td>
+                  <td>
+                    <form method="POST" action="/delete?id={{ res.id }}">
+                      <button class="button">削除</button>
+                    </form>
+                  </td>
+                </tr>
+                {% endfor %}
+
+              </tbody>
+            </table>
+          </div>
+          <!-- modal -->
+          {% for res in result %}
+          <div class="modal fade" id={{ res.id }} tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">{{res.id}}</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  ...
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

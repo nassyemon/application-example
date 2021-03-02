@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+<script>
+  function MoveCheck() {
+      var res = confirm("キャンセルして大丈夫ですか？");
+      if( res == true ) {
+          // OKなら移動
+          window.location.href = "/show";
+      }
+      else {
+          // キャンセルならアラートボックスを表示
+      }
+  }
+  </script>
+<div class="column">
+    <h3 class="title">検索結果</h3>
+        <table class="table is-fullwidth">
+            <thead>
+              <tr>
+                <th>出発可能</th>
+                <th>到着期限</th>
+                <th>予約状況</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for res in result %}
+            <tr>
+                <th>{{ res.start_spot }} ↔ {{ res.goal_spot }}</th>
+                <th>{{ res.return_date }}</th>
+                <th><a href="./show?id={{ res.id }}" class="button is-primary">
+                    予約する
+                </a></th>
+                <!-- <td><a href="https://en.wikipedia.org/wiki/Leicester_City_F.C." title="Leicester City F.C.">Leicester City</a> <strong>(C)</strong>
+                </td>
+                <td>38</td>
+                <td>23</td>
+                <td>12</td>
+                <td>3</td>
+                <td>68</td>
+                <td>36</td>
+                <td>+32</td>
+                <td>81</td>
+                <td>Qualification for the <a href="https://en.wikipedia.org/wiki/2016%E2%80%9317_UEFA_Champions_League#Group_stage" title="2016–17 UEFA Champions League">Champions League group stage</a></td> -->
+              </tr>
+              {% endfor %}
+            </tbody>
+        </table>
+
+</div>
+{% endblock %}

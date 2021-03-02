@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+  .menu__item {
+    background: #5200b7;
+    color: #fff;
+    cursor: pointer;
+    display: block;
+    margin-bottom: 1px;
+  }
+
+  .menu__item__link {
+    color: #fff;
+    display: block;
+    line-height: 60px;
+    padding: 0 1rem;
+    position: relative;
+  }
+
+  .menu__item__link:after {
+    background: #33105f;
+    content: '\f067';
+    display: block;
+    font-family: "Font Awesome 5 Free";
+    line-height: 60px;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    top: 0;
+    width: 60px;
+  }
+
+  .menu__item__link.on:after {
+    content: '\f068';
+  }
+
+  .submenu {
+    background: #fff;
+    display: none;
+  }
+
+  .submenu__item {
+    border-bottom: 1px solid #5200b7;
+    color: #222;
+    padding: 1rem;
+  }
+</style>
+<div class="column is-4 is-offset-4">
+  {{ results }}
+  {% for res in result %}
+  <form action="/adduser?id={{ res.id }}" method="GET">
+    <h3 class="title">車両情報</h3>
+    <div class="box">
+      {% with messages = get_flashed_messages() %}
+      {% if messages %}
+      <div class="notification is-danger">
+        {{ messages[0] }}。
+      </div>
+      {% endif %}
+      {% endwith %}
+
+      <div class="field">
+        <div class="control">
+          <label class="label">出発地点</label>
+          <p>{{ res.start_spot }}</p>
+        </div>
+      </div>
+      <div class="field">
+        <div class="control">
+          <label class="label">到着地点</label>
+          <p>{{ res.goal_spot }}</p>
+        </div>
+      </div>
+      <div class="field">
+        <div class="control">
+          <label class="label">返却期限</label>
+          <p>{{ res.return_date }}</p>
+        </div>
+      </div>
+      <div class="field">
+        <div class="control">
+          <label class="label">車両タイプ</label>
+          <p>{{ res.car_class }}</p>
+        </div>
+      </div>
+
+      <input type="hidden" name="id" value="{{res.id}}" class="st">
+
+      <div class="field">
+        <div class="control">
+          <label class="label">受け取り希望日</label>
+          {% set min_date = res.created_at.strftime('%Y-%m-%d') %}
+          {% set max_date = res.return_date.strftime('%Y-%m-%d') %}
+          <input type="date" name="user_get_day" id="" min="{{ min_date }}" max="{{ max_date }}" required>
+          <input type="time" name="user_get_time" id="time" min="09:00" max="19:00" required>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="control">
+          <label class="label">返却日時</label>
+          {% set min_date = res.created_at.strftime('%Y-%m-%d') %}
+          {% set max_date = res.return_date.strftime('%Y-%m-%d') %}
+          <input type="date" name="user_return_day" id="" min="{{ min_date }}" max="{{ max_date }}" required>
+          <input type="time" name="user_return_time" id="time" min="09:00" max="19:00" required>
+        </div>
+      </div>
+      {% if user.name %}
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+        予約する
+      </button>
+      {% else %}
+      <a href="./login" class="button is-block is-info is-large is-fullwidth">ログインする</a>
+      {% endif %}
+
+      <!-- Modal -->
+      <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">予約内容</h5>
+            </div>
+            <div class="modal-body">
+              <h5>出発地点</h5>
+              <p>
+                {{ res.start_spot }}
+              </p>
+              <h5>到着地点</h5>
+              <p>
+                {{ res.goal_spot }}
+              </p>
+              <hr>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
+              <button type="submit" class="btn btn-primary">予約</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  {% endfor %}
+</div>
+
+{% endblock %}

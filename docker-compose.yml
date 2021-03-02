@@ -7,6 +7,7 @@ services:
       dockerfile: Dockerfile-csweb-app
       args:
         CSWEB_APP_DIR: ${CSWEB_APP_DIR}
+        SHARED_DIR: ${SHARED_DIR}
     environment:
       FLASK_APP: ${CSWEB_FLASK_APP}
       FLASK_ENV: ${CSWEB_FLASK_ENV}
@@ -26,6 +27,9 @@ services:
       - type: bind
         source: ${CSWEB_APP_DIR}/application
         target: /app/application
+      - type: volume
+        source: shared_model
+        target: /app/application/models
     depends_on:
       - mysql-db
     networks:
@@ -62,6 +66,7 @@ services:
       dockerfile: Dockerfile-admweb-app
       args:
         ADMWEB_APP_DIR: ${ADMWEB_APP_DIR}
+        SHARED_DIR: ${SHARED_DIR}
         MIGRATIONS_DIR: ${MIGRATIONS_DIR}
     environment:
       FLASK_APP: ${ADMWEB_FLASK_APP}
@@ -82,6 +87,9 @@ services:
       - type: bind
         source: ${ADMWEB_APP_DIR}/application
         target: /app/application
+      - type: volume
+        source: shared_model
+        target: /app/application/models
       - type: bind
         source: ${MIGRATIONS_DIR}
         target: /app/migrations
@@ -141,3 +149,10 @@ services:
 networks:
   default:
     driver: bridge
+
+volumes:
+  shared_model:
+    driver_opts:
+      type: none
+      device: ${SHARED_DIR}/models
+      o: bind

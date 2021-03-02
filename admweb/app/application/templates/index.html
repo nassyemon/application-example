@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="row justify-content-md-center">
+    <div class="col-lg-6 col-md-12 center-block">
+        <h3 class="title">検索する</h3>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div class="notification is-danger">
+            {{ messages[0] }}。
+        </div>
+        {% endif %}
+        {% endwith %}
+        <form method="POST" action="/result">
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">出発店舗</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" name="start_spot">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">到着店舗</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" name="goal_spot" placeholder="">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">出発日時</label>
+                <div class="col-sm-8">
+                    <input type="datetime-local" class="form-control" name="start_date">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">返却日時</label>
+                <div class="col-sm-8">
+                    <input type="datetime-local" class="form-control" name="return_date">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-outline-light col-10">検索する</button>
+        </form>
+    </div>
+    <div class="col-lg-12 col-md-12">
+        <!-- <h1 class="title">
+            最近追加された片道ルート
+        </h1> -->
+        <h3 class="title text-center">最近追加された片道ルート</h3>
+        <div class="row row-scrollable">
+            {% for res in result %}
+            <div class="col-lg-5 col-md-5 col-scrollable">
+                <div class="card card-block h-100">
+                    <div class="card-header">
+                        {{ res.start_spot }} ↔ {{ res.goal_spot }}
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">返却期限</h5>
+                        <p class="card-text">
+                            {{ res.return_date }}
+                        </p>
+                        <a href="show?id={{res.id}}" class="btn btn-primary">詳細</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <!-- <div class="row row-scrollable">
+            <div class="col-3 col-scrollable">
+                <div class="card card-block">Card</div>
+            </div>
+            <div class="col-3 col-scrollable">
+                <div class="card card-block">Card</div>
+            </div>
+            <div class="col-3 col-scrollable">
+                <div class="card card-block">Card</div>
+            </div>
+            <div class="col-3 col-scrollable">
+                <div class="card card-block">Card</div>
+            </div>
+            <div class="col-3 col-scrollable">
+                <div class="card card-block">Card</div>
+            </div>
+        </div> -->
+        <!-- 
+        <div class="columns is-multiline">
+            {% for res in result %}
+            <div class="column is-4">
+                <div class="card">
+                    <header class="card-header">
+                        <p class="card-header-title">
+                            {{ res.start_spot }} ↔ {{ res.goal_spot }}
+                        </p>
+                        <a href="#" class="card-header-icon" aria-label="more options">
+                            <span class="icon">
+                                <i class="fas fa-angle-down" aria-hidden="true"></i>
+                            </span>
+                        </a>
+                    </header>
+                    <div class="card-content">
+                        <div class="content">
+                            いつまでに着けばいいか
+                            <br>
+                            {{ res.return_date }}
+
+                        </div>
+                    </div>
+                    <footer class="card-footer">
+                        <a href="show?id={{res.id}}" class="card-footer-item">詳細</a>
+                    </footer>
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+    </div> -->
+    </div>
+    {% endblock %}

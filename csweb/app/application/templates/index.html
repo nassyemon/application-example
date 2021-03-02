@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-md-center">
+    <div class="col-lg-6 col-md-12 center-block mb-3">
+        <h3 class="title text-center">検索する</h3>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div class="notification is-danger">
+            {{ messages[0] }}。
+        </div>
+        {% endif %}
+        {% endwith %}
+        <form method="POST" action="/result">
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">出発店舗</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="start_spot">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">到着店舗</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="goal_spot" placeholder="">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">出発日時</label>
+                <div class="col-sm-5 pr-0">
+                    <input type="date" class="form-control" name="take_day" id="today">
+                </div>
+                <div class="col-sm-5 pl-0">
+                    <select name="take_time" id="take_time" class="form-control">
+                        <option value="">出発する時間を選択</option>
+                        <option label="09:00" value="09:00">09:00</option>
+                        <option label="09:30" value="09:30">09:30</option>
+                        <option label="10:00" value="10:00">10:00</option>
+                        <option label="10:30" value="10:30">10:30</option>
+                        <option label="11:00" value="11:00">11:00</option>
+                        <option label="11:30" value="11:30">11:30</option>
+                        <option label="12:00" value="12:00">12:00</option>
+                        <option label="12:30" value="12:30">12:30</option>
+                        <option label="13:00" value="13:00">13:00</option>
+                        <option label="13:30" value="13:30">13:30</option>
+                        <option label="14:00" value="14:00">14:00</option>
+                        <option label="14:30" value="14:30">14:30</option>
+                        <option label="15:00" value="15:00">15:00</option>
+                        <option label="15:30" value="15:30">15:30</option>
+                        <option label="16:00" value="16:00">16:00</option>
+                        <option label="16:30" value="16:30">16:30</option>
+                        <option label="17:00" value="17:00">17:00</option>
+                        <option label="17:30" value="17:30">17:30</option>
+                        <option label="18:00" value="18:00">18:00</option>
+                        <option label="18:30" value="18:30">18:30</option>
+                        <option label="19:00" value="19:00">19:00</option>
+                        <option label="19:30" value="19:30">19:30</option>
+                        <option label="20:00" value="20:00">20:00</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">返却日時</label>
+                <div class="col-sm-5 pr-0">
+                    <input type="date" class="form-control" name="return_day" id="today2">
+                </div>
+                <div class="col-sm-5 pl-0">
+                    <select name="return_time" id="return_time" class="form-control">
+                        <option value="">返却する時間を選択</option>
+                        <option label="09:00" value="09:00">09:00</option>
+                        <option label="09:30" value="09:30">09:30</option>
+                        <option label="10:00" value="10:00">10:00</option>
+                        <option label="10:30" value="10:30">10:30</option>
+                        <option label="11:00" value="11:00">11:00</option>
+                        <option label="11:30" value="11:30">11:30</option>
+                        <option label="12:00" value="12:00">12:00</option>
+                        <option label="12:30" value="12:30">12:30</option>
+                        <option label="13:00" value="13:00">13:00</option>
+                        <option label="13:30" value="13:30">13:30</option>
+                        <option label="14:00" value="14:00">14:00</option>
+                        <option label="14:30" value="14:30">14:30</option>
+                        <option label="15:00" value="15:00">15:00</option>
+                        <option label="15:30" value="15:30">15:30</option>
+                        <option label="16:00" value="16:00">16:00</option>
+                        <option label="16:30" value="16:30">16:30</option>
+                        <option label="17:00" value="17:00">17:00</option>
+                        <option label="17:30" value="17:30">17:30</option>
+                        <option label="18:00" value="18:00">18:00</option>
+                        <option label="18:30" value="18:30">18:30</option>
+                        <option label="19:00" value="19:00">19:00</option>
+                        <option label="19:30" value="19:30">19:30</option>
+                        <option label="20:00" value="20:00">20:00</option>
+                    </select>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-outline-light col-12">検索する</button>
+        </form>
+    </div>
+    <div class="col-lg-12 col-md-12">
+        <!-- <h1 class="title">
+            最近追加された片道ルート
+        </h1> -->
+        <h3 class="title text-center">最近追加された片道ルート</h3>
+        <div class="row row-scrollable">
+            {% for res in result %}
+            <div class="col-lg-5 col-md-5 col-scrollable">
+                <div class="card card-block h-100">
+                    <div class="card-header">
+                        {{ res.start_spot }} から {{ res.goal_spot }}
+                    </div>
+                    <div class="card-body">
+                        <div class="row text-left mb-1">
+                            <div class="col-sm-6">返却期限日：<br>{{ res.return_date }}</div>
+                            <div class="col-sm-6">
+                                予約受付期限日：<br>{{ res.display_date }}
+                            </div>
+                        </div>
+                        <div class="row text-left mb-1">
+                            <div class="col-sm-6">シート情報：<br>{{ res.child }}</div>
+                            <div class="col-sm-6">
+                                クラス：<br>{{ res.car_class }}
+                            </div>
+                        </div>
+                        <div class="row text-left mb-1">
+                            <div class="col-sm-12">機能：<br>
+                                {% if  not res.nosmoke == None %}
+                                禁煙 /
+                                {% endif %}
+                                {% if  not res.wd4 == None %}
+                                4WD /
+                                {% endif %}
+                                {% if  not res.studless == None %}
+                                スタッドレス /
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="row text-left mb-1">
+                            <div class="col-sm-12">備考欄：<br>
+                                {% if res.remarks == None%}
+                                なし
+                                {% else %}
+                                {{res.remarks}}
+                                {% endif %}
+                            </div>
+                        </div>
+                        <a href="show?id={{res.id}}" class="btn btn-primary">詳細</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <script>
+        var today = new Date();
+        today.setDate(today.getDate());
+        var yyyy = today.getFullYear();
+        var mm = ("0" + (today.getMonth() + 1)).slice(-2);
+        var dd = ("0" + today.getDate()).slice(-2);
+        document.getElementById("today").value = yyyy + '-' + mm + '-' + dd;
+        document.getElementById("today2").value = yyyy + '-' + mm + '-' + dd;
+
+    </script>
+    {% endblock %}

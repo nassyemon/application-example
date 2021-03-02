@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block content %}
+<script>
+function MoveCheck() {
+    var res = confirm("キャンセルして大丈夫ですか？");
+    if( res == true ) {
+        // OKなら移動
+        window.location.href = "/";
+    }
+    else {
+        // キャンセルならアラートボックスを表示
+    }
+}
+</script>
+<h1 class="title">
+    <div class="column is-4 is-offset-4">
+        <div class="box">
+          {% with messages = get_flashed_messages() %}
+          {% if messages %}
+          <div class="notification is-danger">
+            {{ messages[0] }}。
+          </div>
+          {% endif %}
+          {% endwith %}
+      
+          <div class="field">
+            <div class="control">
+              <label class="label">出発地点</label>
+              <p>大阪</p>
+            </div>
+          </div>
+          <div class="field">
+            <div class="control">
+              <label class="label">到着地点</label>
+              <p>東京</p>
+            </div>
+          </div>
+          <div class="field">
+            <div class="control">
+              <label class="label">返却期限</label>
+              <p>2020-03-28</p>
+            </div>
+          </div>
+          <div class="field">
+            <div class="control">
+              <label class="label">車両タイプ</label>
+              <p>Sタイプ</p>
+            </div>
+          </div>
+      
+          <div class="field">
+            <div class="control">
+              <!-- <label class="label">料金（円）</label>
+              <p>当日ご案内します</p> -->
+            </div>
+          </div>
+          <div class="field">
+            <div class="control">
+              <label class="label">受け取り日</label>
+              <p>2020-04-04</p>
+            </div>
+          </div>
+          <div class="field">
+            <p>予約者 あり</p>
+            <div class="control">
+              <label class="label">氏名</label>
+              <p>糸長優磨</p>
+            </div>
+          </div>
+          <div class="field">
+            <div class="control">
+              <label class="label">電話番号</label>
+              <p>08077442579</p>
+            </div>
+          </div>
+          <div class="field">
+            <div class="control">
+              <label class="label">メールアドレス</label>
+              <p>itonaga0322@gmail.com</p>
+            </div>
+          </div>
+          <div class="field">
+            <div class="control">
+              <label class="label">決済状況</label>
+              <p>未決済</p>
+            </div>
+          </div>
+          <!-- <a href="login" class="button is-block is-info is-large is-fullwidth">ログインして予約する</a> -->
+          <!-- <a href="signup" class="is-block is-info is-large is-fullwidth">アカウント作成して予約する</a> -->
+          <button class="button is-block " onclick="MoveCheck()">戻る</button>
+        </div>
+      </div>
+</h1>
+
+{% endblock %}
