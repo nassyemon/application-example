@@ -61,7 +61,7 @@ services:
       context: .
       dockerfile: Dockerfile-admweb-app
       args:
-        CSWEB_APP_DIR: ${ADMWEB_APP_DIR}
+        ADMWEB_APP_DIR: ${ADMWEB_APP_DIR}
         MIGRATIONS_DIR: ${MIGRATIONS_DIR}
     environment:
       FLASK_APP: ${ADMWEB_FLASK_APP}
@@ -98,7 +98,7 @@ services:
       context: .
       dockerfile: Dockerfile-admweb-nginx
       args:
-        CSWEB_NGINX_DIR: ${ADMWEB_NGINX_DIR}
+        ADMWEB_NGINX_DIR: ${ADMWEB_NGINX_DIR}
     environment:
       APP_HOST: ${ADMWEB_APP_HOST}
       APP_PORT: ${ADMWEB_APP_PORT}

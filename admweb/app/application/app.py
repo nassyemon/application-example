@@ -8,7 +8,8 @@ app = Blueprint('api', __name__)
 def index():
     print("called index")
     return jsonify({
-        "hello": "world!"
+        "hello": "world!",
+        "application": "admin web",
     })
 
 @app.route('/__healthcheck')

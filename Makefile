@@ -2,13 +2,17 @@
 DIR := ./
 ENV_FILE := ./.env
 BUILD_ARG_FILE :=./build_args.env
+
+CSWEB_APP_IMAGE_NAME := csweb-app
+CSWEB_NGINX_IMAGE_NAME := csweb-nginx
+ADMWEB_APP_IMAGE_NAME := admweb-app
+ADMWEB_NGINX_IMAGE_NAME := admweb-nginx
+MIGRATE_APP_IMAGE_NAME := migrate-app
+
 ENVS := $(shell cat ${ENV_FILE} | grep -v '\#' | xargs )
 BUILD_ARGS := $(shell cat ${BUILD_ARG_FILE} | grep -v '\#' | xargs -I{} echo --build-arg {})
 MIGRATIONS_DIR := $(shell ${ENVS}; echo $$MIGRATIONS_DIR)
 
-CSWEB_APP_IMAGE_NAME := csweb-app
-CSWEB_NGINX_IMAGE_NAME := csweb-nginx
-MIGRATE_APP_IMAGE_NAME := migrate-app
 ECR_ENV_FILE := ./ecr.env
 ECR_ENVS := $(shell cat ${ECR_ENV_FILE} | grep -v '\#' | xargs )
 GIT_BRANCH := $(shell git branch --show-current)
@@ -21,11 +25,15 @@ REGISTRY := $(shell ${ECR_ENVS}; echo $$REGISTRY)
 CSWEB_APP_REPOSITORY := $(shell ${ECR_ENVS}; echo $$CSWEB_APP_REPOSITORY)
 MIGRATE_APP_REPOSITORY := $(shell ${ECR_ENVS}; echo $$MIGRATE_APP_REPOSITORY)
 CSWEB_NGINX_REPOSITORY := $(shell ${ECR_ENVS}; echo $$CSWEB_NGINX_REPOSITORY)
+ADMWEB_APP_REPOSITORY := $(shell ${ECR_ENVS}; echo $$ADMWEB_APP_REPOSITORY)
+ADMWEB_NGINX_REPOSITORY := $(shell ${ECR_ENVS}; echo $$ADMWEB_NGINX_REPOSITORY)
 
 BRANCH_BASED_TAG = latest_${GIT_BRANCH}
 LATEST_CSWEB_APP = $(shell docker image ls | grep -E '^${CSWEB_APP_IMAGE_NAME}\s+latest' | awk '{print $$3}')
-LATEST_MIGRATE_APP = $(shell docker image ls | grep -E '^${MIGRATE_APP_IMAGE_NAME}\s+latest' | awk '{print $$3}')
 LATEST_CSWEB_NGINX = $(shell docker image ls | grep -E '^${CSWEB_NGINX_IMAGE_NAME}\s+latest' | awk '{print $$3}')
+LATEST_ADMWEB_APP = $(shell docker image ls | grep -E '^${ADMWEB_APP_IMAGE_NAME}\s+latest' | awk '{print $$3}')
+LATEST_ADMWEB_NGINX = $(shell docker image ls | grep -E '^${ADMWEB_NGINX_IMAGE_NAME}\s+latest' | awk '{print $$3}')
+LATEST_MIGRATE_APP = $(shell docker image ls | grep -E '^${MIGRATE_APP_IMAGE_NAME}\s+latest' | awk '{print $$3}')
 
 define PUSH_APP
 	@#$1=lastest-image, $2=repository-name
@@ -66,23 +74,27 @@ down:
  db-init:
 	@docker-compose build
 	mkdir -p ${MIGRATIONS_DIR}
-	docker-compose run  --entrypoint flask csweb-app db init
+	docker-compose run  --entrypoint flask admweb-app db init
 
 .PHONY: db-migrate
 db-migrate: up
 	@docker-compose build
-	docker-compose run --entrypoint flask csweb-app db migrate
+	docker-compose run --entrypoint flask admweb-app db migrate
 
 .PHONY: db-upgrade
 db-upgrade: up
 	@docker-compose build
-	docker-compose run  --entrypoint flask csweb-app db upgrade
+	docker-compose run  --entrypoint flask admweb-app db upgrade
 
 .PHONY: connect-mysql
 connect-mysql:
 	${ENVS}; mysql --protocol tcp -h localhost -P 3306 -u $${DB_USER} -D $${DB_NAME} -p$${DB_PASSWORD}
 
-# app
+# csweb
+.PHONY: push-csweb
+push-csweb: push-csweb-app push-csweb-nginx
+
+## csweb-app
 .PHONY: build-csweb-app
 build-csweb-app:
 	${ENVS}; docker build ${BUILD_ARGS} ./ -f ./Dockerfile-csweb-app -o out -t ${CSWEB_APP_IMAGE_NAME}:latest
@@ -99,7 +111,7 @@ login-csweb-app: build-csweb-app
 push-csweb-app: build-csweb-app inspect-csweb-app
 	$(call PUSH_APP,${LATEST_CSWEB_APP},${CSWEB_APP_REPOSITORY})
 
-# nginx
+## csweb-nginx
 .PHONY: build-csweb-nginx
 build-csweb-nginx:
 	${ENVS}; docker build ${BUILD_ARGS} ./ -f ./Dockerfile-csweb-nginx -o out -t ${CSWEB_NGINX_IMAGE_NAME}:latest
@@ -115,12 +127,50 @@ login-csweb-nginx: build-csweb-nginx
 .PHONY: push-migrate
 push-csweb-nginx: build-csweb-nginx inspect-csweb-nginx
 	$(call PUSH_APP,${LATEST_CSWEB_NGINX},${CSWEB_NGINX_REPOSITORY})
- 
 
-# migrate
+
+# admweb
+.PHONY: push-csadmwebweb
+push-admweb: push-admweb-app push-admweb-nginx
+
+## admweb-app
+.PHONY: build-admweb-app
+build-admweb-app:
+	${ENVS}; docker build ${BUILD_ARGS}  ./ -f Dockerfile-admweb-app -o out -t ${ADMWEB_APP_IMAGE_NAME}:latest
+
+.PHONY: inspect-admweb-app
+inspect-admweb-app:
+	docker inspect ${LATEST_ADMWEB_APP}
+
+.PHONY: login-admweb-app
+login-admweb-app: build-admweb-app
+	docker run -i -t --env-file ${ENV_FILE} --entrypoint "/bin/bash" ${LATEST_ADMWEB_APP}
+
+.PHONY: push-admweb-app
+push-admweb-app: build-admweb-app inspect-admweb-app
+	$(call PUSH_APP,${LATEST_ADMWEB_APP},${ADMWEB_APP_REPOSITORY})
+
+## admweb-nginx
+.PHONY: build-admweb-nginx
+build-admweb-nginx:
+	${ENVS}; docker build ${BUILD_ARGS} ./ -f Dockerfile-admweb-nginx -o out -t ${ADMWEB_NGINX_IMAGE_NAME}:latest
+
+.PHONY: inspect-admweb-nginx
+inspect-admweb-nginx:
+	docker inspect ${LATEST_ADMWEB_NGINX}
+
+.PHONY: login-admweb-nginx
+login-admweb-nginx: build-admweb-nginx
+	docker run -i -t --env-file ${ENV_FILE} --entrypoint "/bin/sh" ${LATEST_ADMWEB_NGINX}
+
+.PHONY: push-admweb-nginx
+push-admweb-nginx: build-admweb-nginx inspect-admweb-nginx
+	$(call PUSH_APP,${LATEST_ADMWEB_NGINX},${ADMWEB_NGINX_REPOSITORY})
+
+# migrate-app
 .PHONY: build-migrate
 build-migrate: db-migrate
-	${ENVS}; docker build ${BUILD_ARGS} ./ -f ./Dockerfile-admweb-app -o out -t ${MIGRATE_APP_IMAGE_NAME}:latest
+	${ENVS}; docker build ${BUILD_ARGS} ./ -f Dockerfile-admweb-app -o out -t ${MIGRATE_APP_IMAGE_NAME}:latest
 
 .PHONY: inspect-migrate
 inspect-migrate:
