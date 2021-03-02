@@ -5,6 +5,7 @@ migrations/
 .envrc
 
 **/__pycache__
+**/node_modules
 
 .idea/
 
