@@ -1,3 +1,6 @@
+# application-example
+業務で使う前に色々と検証するためのアレ (アプリの方)
+
 # Requirements
 - Docker
 - GNU Make
